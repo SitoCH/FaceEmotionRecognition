@@ -61,16 +61,14 @@ namespace FaceEmotionRecognition
 				};
 
 				// Get a list of faces in a picture
-				var faces = await faceServiceClient.
-					DetectAsync(inputFile.GetStream(),
-								false, false, requiredFaceAttributes);
+				var faces = await faceServiceClient. DetectAsync(inputFile.GetStream(), false, false, requiredFaceAttributes);
 
 				// Assuming there is only one face, store its attributes
 				var faceAttributes = faces[0]?.FaceAttributes;
 
 				if (faceEmotion == null || faceAttributes == null) return null;
 
-				FaceEmotionDetection faceEmotionDetection = new FaceEmotionDetection();
+				var faceEmotionDetection = new FaceEmotionDetection();
 				faceEmotionDetection.Age = faceAttributes.Age;
 				faceEmotionDetection.Emotion = faceEmotion.FirstOrDefault().Key;
 				faceEmotionDetection.Glasses = faceAttributes.Glasses.ToString();
@@ -88,7 +86,6 @@ namespace FaceEmotionRecognition
 				{
 					iex = iex.InnerException;
 				}
-
 				await DisplayAlert("Error", iex.Message, "OK");
 				return null;
 			}
@@ -107,9 +104,8 @@ namespace FaceEmotionRecognition
 			var file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
 			{
 				SaveToAlbum = false,
-				Name = "test.jpg",
-				PhotoSize = PhotoSize.Medium,
-				CompressionQuality = 90
+				Name = "FaceEmotionRecognition.jpg",
+				PhotoSize = PhotoSize.Large
 			});
 
 			if (file == null)
