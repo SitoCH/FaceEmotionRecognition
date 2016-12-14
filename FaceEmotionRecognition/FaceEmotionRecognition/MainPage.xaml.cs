@@ -8,6 +8,8 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using PCLAppConfig;
+using System.Reflection;
 
 namespace FaceEmotionRecognition
 {
@@ -20,10 +22,13 @@ namespace FaceEmotionRecognition
 		{
 			InitializeComponent();
 
+			var assembly = typeof(App).GetTypeInfo().Assembly;
+			var cm = new ConfigurationManager(assembly.GetManifestResourceStream("FaceEmotionRecognition.api-keys.config"));
+
 			// Provides access to the Face APIs
-			this.faceServiceClient = new FaceServiceClient("KEY");
+			this.faceServiceClient = new FaceServiceClient(cm.GetAppSetting("FaceServiceClientAPIKey"));
 			// Provides access to the Emotion APIs
-			this.emotionServiceClient = new EmotionServiceClient("KEY");
+			this.emotionServiceClient = new EmotionServiceClient(cm.GetAppSetting("EmotionServiceClientAPIKey"));
 
 		}
 
